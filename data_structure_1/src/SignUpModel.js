@@ -17,8 +17,5 @@ SignUp.save_sms = function (sms_json) {
 }
 
 SignUp.render_sign_ups = function (activity_name) {
-    var currents = _.find(Activity.get(), function (activity) {
-        return activity.name == activity_name;
-    })
-    return currents.sign_ups;
+    return Activity.this_activity(activity_name).sign_ups;
 }

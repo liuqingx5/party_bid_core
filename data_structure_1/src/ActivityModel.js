@@ -27,3 +27,9 @@ Activity.current = function () {
 Activity.current_name = function () {
     return Activity.current().name;
 }
+
+Activity.this_activity = function (activity_name) {
+    return  _.find(Activity.get(), function (activity) {
+        return activity.name == activity_name;
+    })
+}
