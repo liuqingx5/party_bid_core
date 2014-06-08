@@ -33,3 +33,4 @@ Activity.this_activity = function (activity_name) {
         return activity.name == activity_name;
     })
 }
+
