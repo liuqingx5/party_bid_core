@@ -14,3 +14,16 @@ Activity.prototype.active = function (activity_name) {
     localStorage.current_activity = activity_name;
 }
 
+Activity.get = function () {
+    return JSON.parse(localStorage.getItem('activities')) || [];
+}
+
+Activity.current = function () {
+    return _.find(Activity.get(), function (avtivity) {
+        return avtivity.name == localStorage.current_activity;
+    })
+}
+
+Activity.current_name = function () {
+    return Activity.current().name;
+}
