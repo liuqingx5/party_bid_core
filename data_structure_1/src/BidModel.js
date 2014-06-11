@@ -12,11 +12,16 @@ Bid.create_new_bid = function (activity_name) {
     })
     bids.push(bid);
     localStorage.setItem('activities', JSON.stringify(activities));
+}
 
+Bid.current_activity_bids = function () {
+    return Activity.current().bids;
 }
 
 Bid.this_activity_bid = function () {
-    return _.find(Activity.current(), function (activity) {
-        return  activity.bids.name == localStorage.current_bid;
+    return _.find(Bid.current_activity_bids(), function (bid) {
+        return  bid.name == localStorage.current_bid;
     })
 }
+
+
