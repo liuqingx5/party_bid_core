@@ -24,5 +24,42 @@ Bidding.current_activity_bids = function (activities) {
     })
 }
 
+Bidding.transform_bids_to_view_model = function (name) {
+    var activities = JSON.parse(localStorage.getItem("activities")) || [];
+    var current_activity = _.find(activities, function (activity) {
+        return activity.name == name;
+    })
+    return current_activity.bids;
+}
+
+Bidding.current_activity_bid_biddings = function (name, bid) {
+    var activities = JSON.parse(localStorage.getItem("activities")) || [];
+    var current_activity = _.find(activities, function (activity) {
+        return activity.name == name;
+    })
+    var current_activity_bid = _.find(current_activity.bids, function (current_activity_bid) {
+        return current_activity_bid.name == bid;
+    })
+    return current_activity_bid.biddings;
+}
+
+Bidding.success_bidding = function (name, bid) {
+    return  _.chain(Bidding.current_activity_bid_biddings(name, bid))
+        .groupBy(function (current_activity_bid_bidding) {
+            return current_activity_bid_bidding.price;
+        })
+        .sortBy(function (current_activity_bid_bidding) {
+            return current_activity_bid_bidding.price;
+        })
+        .value();
+}
+
+Bidding.transform_biddings_to_view_model = function (name, bid) {
+    return _.find(Bidding.success_bidding(name, bid), function (success_bidding) {
+        return success_bidding.length == '1';
+    })
+}
+
+
 
 
