@@ -21,8 +21,7 @@ SignUp.render_sign_ups = function (activity_name) {
 }
 
 SignUp.sign_current_activity = function (sms_json) {
-    var current_activity_sign_ups = Activity.current().sign_ups;
-    return _.find(current_activity_sign_ups, function (sign_up) {
+    return _.find(Activity.current().sign_ups, function (sign_up) {
         return sign_up.phone == sms_json.messages[0].phone;
     })
 }

@@ -25,16 +25,14 @@ Bidding.current_activity_bids = function (activities) {
 }
 
 Bidding.transform_bids_to_view_model = function (name) {
-    var activities = JSON.parse(localStorage.getItem("activities")) || [];
-    var current_activity = _.find(activities, function (activity) {
+    var current_activity = _.find(Activity.get(), function (activity) {
         return activity.name == name;
     })
     return current_activity.bids;
 }
 
 Bidding.current_activity_bid_biddings = function (name, bid) {
-    var activities = JSON.parse(localStorage.getItem("activities")) || [];
-    var current_activity = _.find(activities, function (activity) {
+    var current_activity = _.find(Activity.get(), function (activity) {
         return activity.name == name;
     })
     var current_activity_bid = _.find(current_activity.bids, function (current_activity_bid) {

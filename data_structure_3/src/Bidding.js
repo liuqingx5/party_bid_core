@@ -23,8 +23,7 @@ Bidding.find_activity_bids = function () {
 }
 
 Bidding.sign_up_current_activity = function (sms_json) {
-    var sign_ups = JSON.parse(localStorage.sign_ups);
-    return _.find(sign_ups, function (sign_up) {
+    return _.find(SignUp.get_sign_ups(), function (sign_up) {
         return sign_up.activity_id == localStorage.current_activity && sign_up.phone == sms_json.messages[0].phone;
     })
 }
