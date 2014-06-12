@@ -29,4 +29,48 @@ Bidding.sign_up_current_activity = function (sms_json) {
     })
 }
 
+Bidding.current_activity_bid_biddings = function (activity, bid_name) {
+    var current_activity_bid_biddings = _.find(Bid.get_bids(), function (bid) {
+        return bid.activity_id == activity && bid.name == bid_name;
+    })
+    return current_activity_bid_biddings.biddings;
+}
 
+Bidding.bidding_results = function (activity, bid_name) {
+    return _.chain(Bidding.current_activity_bid_biddings(activity, bid_name))
+        .groupBy(function (current_activity_bid_bidding) {
+            return current_activity_bid_bidding.price;
+        })
+        .sortBy(function (current_activity_bid_bidding) {
+            return current_activity_bid_bidding.price;
+        })
+        .value();
+}
+
+Bidding.success_bidding = function (activity, bid_name) {
+    return _.find(Bidding.bidding_results(activity, bid_name), function (bidding_result) {
+        return bidding_result.length == '1';
+    })
+}
+
+Bidding.sign_up_current = function (activity, bid_name) {
+    var sign_ups = JSON.parse(localStorage.sign_ups);
+    return _.chain(sign_ups)
+        .filter(function (sign_up) {
+            return sign_up.activity_id == activity;
+        })
+        .find(function (sign_up) {
+            return sign_up.phone == Bidding.success_bidding(activity, bid_name)[0].phone;
+        })
+        .value();
+}
+
+Bidding.render_biddings = function (activity, bid_name) {
+    var successes = [];
+    var success = {}
+    success.name = Bidding.sign_up_current(activity, bid_name).name;
+    success.phone = Bidding.success_bidding(activity, bid_name)[0].phone;
+    success.price = Bidding.success_bidding(activity, bid_name)[0].price;
+    successes.push(success);
+    return successes;
+}
