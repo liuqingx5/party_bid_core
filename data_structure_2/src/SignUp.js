@@ -16,3 +16,15 @@ SignUp.save_message = function (sms_json) {
     }
 }
 
+SignUp.sign_current_activity = function (activity_name) {
+    var activities = JSON.parse(localStorage.activities);
+    return _.find(activities, function (activity) {
+        return activity.name == activity_name;
+    })
+}
+
+SignUp.render_sign_ups = function (activity_name) {
+    return SignUp.sign_current_activity(activity_name).sign_ups;
+}
+
+
