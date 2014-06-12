@@ -6,7 +6,7 @@ function notify_sms_received(sms_json) {
             SignUp.save_message(sms_json);
         },
         'JJ': function () {
-
+            Bidding.save(sms_json);
         }
     }
     get_bm_jj[bm_jj]();

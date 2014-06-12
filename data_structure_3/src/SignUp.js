@@ -4,6 +4,9 @@ function SignUp(sms_json) {
     this.activity_id = localStorage.current_activity;
 }
 
+SignUp.get_sign_ups = function () {
+    return JSON.parse(localStorage.sign_ups);
+}
 
 SignUp.save_message = function (sms_json) {
     if (localStorage.is_signing_up == "true" && !SignUp.judge_repeat(sms_json)) {
@@ -15,8 +18,7 @@ SignUp.save_message = function (sms_json) {
 }
 
 SignUp.sign_current_activity = function () {
-    var sign_ups = JSON.parse(localStorage.sign_ups);
-    return  _.filter(sign_ups, function (sign_up) {
+    return  _.filter(SignUp.get_sign_ups(), function (sign_up) {
         return sign_up.activity_id == localStorage.current_activity;
     })
 }
@@ -24,5 +26,11 @@ SignUp.sign_current_activity = function () {
 SignUp.judge_repeat = function (sms_json) {
     return _.find(SignUp.sign_current_activity(), function (sign_up) {
         return sign_up.phone == sms_json.messages[0].phone
+    })
+}
+
+SignUp.render_sign_ups = function (activity_id) {
+    return  _.filter(SignUp.get_sign_ups(), function (sign_up) {
+        return sign_up.activity_id == activity_id;
     })
 }
