@@ -69,7 +69,7 @@ describe("Bids and Bidding Render", function () {
     })
 
     it("should show all bids", function () {
-        var bids = transform_bids_to_view_model("1");
+        var bids = Bidding.transform_bids_to_view_model("1");
 
         expect(bids.length).toBe(2);
         expect(bids[0]).toBe("竞价1");
@@ -77,7 +77,7 @@ describe("Bids and Bidding Render", function () {
     });
 
     it("should show minimum not repeatable bidding", function () {
-        var biddings = transform_biddings_to_view_model("1", "竞价2");
+        var biddings = Bidding.transform_biddings_to_view_model("1", "竞价2");
         console.log(biddings)
         expect(biddings.length).toBe(1);
         expect(biddings[0].name).toBe("于硕");

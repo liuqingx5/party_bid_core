@@ -29,8 +29,53 @@ Bidding.save_bidding_message = function (sms_json) {
 Bidding.judge_sign_up_current_activity = function (sms_json) {
     var activities = JSON.parse(localStorage.activities);
     var current_sign_ups = activities[localStorage.current_activity].sign_ups;
-    return _.find(current_sign_ups,function(current_sign_up){
+    return _.find(current_sign_ups, function (current_sign_up) {
         return current_sign_up.phone == sms_json.messages[0].phone;
+    })
+}
+
+Bidding.transform_bids_to_view_model = function (activity) {
+    var activities = JSON.parse(localStorage.activities);
+    return activities[activity].bids;
+
+}
+
+Bidding.transform_biddings_to_view_model = function (activity, bid) {
+    var successes = [];
+    var success = {};
+    success.name = Bidding.find_success_people(activity, bid).name;
+    success.phone = Bidding.success_bidding_message(activity, bid)[0].phone;
+    success.price = Bidding.success_bidding_message(activity, bid)[0].price;
+    successes.push(success);
+    return successes;
+
+}
+
+Bidding.current_activity_bid_biddings = function (activity, bid) {
+    var activities = JSON.parse(localStorage.activities);
+    var current_activity_bid_biddings = activities[activity].biddings[bid];
+    return  _.chain(current_activity_bid_biddings)
+        .groupBy(function (current_activity_bid_bidding) {
+
+            return current_activity_bid_bidding.price;
+        })
+        .sortBy(function (current_activity_bid_bidding) {
+            return current_activity_bid_bidding.price;
+        })
+        .value()
+}
+
+Bidding.success_bidding_message = function (activity, bid) {
+    return _.find(Bidding.current_activity_bid_biddings(activity, bid), function (current_activity_bid_bidding) {
+        return current_activity_bid_bidding.length == '1';
+    })
+}
+
+Bidding.find_success_people = function (activity, bid) {
+    var activities = JSON.parse(localStorage.activities);
+    var sign_ups = activities[activity].sign_ups;
+    return  _.find(sign_ups, function (sign_up) {
+        return sign_up.phone == Bidding.success_bidding_message(activity, bid)[0].phone;
     })
 }
 
